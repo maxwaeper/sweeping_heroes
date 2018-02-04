@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
-	GameObject inventoryPanel;
-	GameObject slotPanel;
 	ItemDatabase database;
+	GameObject slotPanel;
+
+	GameObject inventoryPanel;
 	public GameObject inventorySlot;
 	public GameObject inventoryItem;
 
 	int slotAmount;
-	float impact = 0;
 	public List<Item> items = new List<Item> ();
 	public List<GameObject> slots = new List<GameObject> ();
 
@@ -41,14 +41,9 @@ public class Inventory : MonoBehaviour {
 				itemObj.GetComponent<Image> ().sprite = itemToAdd.Sprite;
 				itemObj.transform.position = Vector2.zero;
 				itemObj.name = itemToAdd.title;
-
-				impact =+ items[i].impact;
 				break;
 			}
 		}
 	}
-
-	public float GetImpact(){
-		return impact;
-	}
 }
+
