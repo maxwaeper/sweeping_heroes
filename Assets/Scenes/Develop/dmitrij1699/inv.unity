@@ -650,7 +650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventorySlot: {fileID: 1187707255659556, guid: 82ae5b20ff98134449daa539536d7cdf,
     type: 2}
-  inventoryItem: {fileID: 1176931886312110, guid: 1afb174e18833cc47aa73b493c829040,
+  inventoryItem: {fileID: 1420270113437880, guid: 1afb174e18833cc47aa73b493c829040,
     type: 2}
   slots: []
 --- !u!1 &1820662039
