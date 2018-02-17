@@ -28,6 +28,18 @@ public class Slot : MonoBehaviour, IDropHandler {
 		}
 	}
 
+	public void deleteInv(){
+		inv.items [slotID].ID = -1;
+		//inv = null;
+	}
+
+	public bool isEpty(){
+		if (inv.items [slotID].ID == -1) {
+			return true;
+		} else
+			return false;
+	}
+
 	// Use this for initialization
 	void Start () {
 		inv = GameObject.Find ("Inventory").GetComponent<Inventory> ();
