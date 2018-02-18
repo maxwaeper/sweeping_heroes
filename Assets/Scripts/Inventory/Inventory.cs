@@ -29,8 +29,17 @@ public class Inventory : MonoBehaviour {
 		currentSlotAmount = 3;
 
 		inventoryPanel = GameObject.Find ("Inventory Panel");
+
+		currentSlotPanel = GameObject.Find ("Current Slot Panel").gameObject; //над потом более аккуратный поиск замутить
+		for (int i = 0; i < currentSlotAmount; i++) {
+			items.Add (new Item ());
+			slots.Add (Instantiate (inventorySlot));
+			slots [i].GetComponent<Slot>().slotID = i;
+			slots [i].transform.SetParent (currentSlotPanel.transform);
+		}
+
 		slotPanel = inventoryPanel.transform.Find ("Slot Panel").gameObject;
-		for (int i = 0; i < slotAmount; i++) {
+		for (int i = currentSlotAmount; i < (currentSlotAmount+slotAmount) ; i++) {
 			items.Add (new Item ());
 			slots.Add (Instantiate (inventorySlot));
 			slots [i].GetComponent<Slot>().slotID = i;
@@ -38,13 +47,7 @@ public class Inventory : MonoBehaviour {
 		}
 
 		//currentInventoryPanel = t.Find
-		currentSlotPanel = GameObject.Find ("Current Slot Panel").gameObject; //над потом более аккуратный поиск замутить
-		for (int i = slotAmount; i < currentSlotAmount+slotAmount ; i++) {
-			items.Add (new Item ());
-			slots.Add (Instantiate (inventorySlot));
-			slots [i].GetComponent<Slot>().slotID = i;
-			slots [i].transform.SetParent (currentSlotPanel.transform);
-		}
+
 
 		tooltip = this.GetComponent<Tooltip> ();
 
@@ -60,13 +63,14 @@ public class Inventory : MonoBehaviour {
 		Item itemToAdd = database.FetchItemByID (id);
 		if (itemToAdd.Stackable && CheckIfItemIsInInventory (itemToAdd)) {
 			for (int i = 0; i < items.Count; i++) {
-				
-				ItemData data = slots [i].transform.GetChild (0).GetComponent<ItemData> ();
+				if (items [i].ID == id) {
+					ItemData data = slots [i].transform.GetChild (0).GetComponent<ItemData> ();
 
-				data.amount ++;
+					data.amount ++;
 
-				data.transform.GetChild (0).GetComponent<Text> ().text = data.amount.ToString ();
-				break;
+					data.transform.GetChild (0).GetComponent<Text> ().text = data.amount.ToString ();
+					break;
+				}
 			}
 		} else {
 			for (int i = 0; i < items.Count; i++) {
@@ -130,16 +134,11 @@ public class Inventory : MonoBehaviour {
 
 	public void RemoveFullStockOfItems(int id){ // Удаление первого попавшегося с данным id
 		Item itemToRemove = database.FetchItemByID (id);
-
-		for (int i = 0; i < slots.Count; i++) {
-			if ( !slots [i].GetComponent<Slot> ().isEpty () ) {
-				ItemData data = slots [i].transform.GetChild (0).GetComponent<ItemData> ();
-				if (data.item.ID == id) {
-					slots [i].GetComponent<Slot> ().deleteInv ();
+		for (int i = 0; i < items.Count; i++) {
+				if (items [i].ID == id) {
 					Destroy ( slots [i].transform.GetChild(0).gameObject );
-					items.RemoveAt (id);
+					items[i] = new Item();
 					break;
-				}
 			}
 		}
 	}

@@ -6,10 +6,7 @@ using UnityEngine.EventSystems;
 public class ItemData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler  {
 	public Item item;
 	public int amount;
-	public int slot; 
-
-
-
+	public int slot;
 
 	private Transform originalParent;
 	private Inventory inv;
