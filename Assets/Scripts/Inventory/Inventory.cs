@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour {
 
 	GameObject inventoryPanel;
 	GameObject currentInventoryPanel;
+	GameObject buffer_obj;
 
 	public GameObject inventorySlot;
 	public GameObject inventoryItem;
@@ -45,18 +46,17 @@ public class Inventory : MonoBehaviour {
 			slots [i].GetComponent<Slot>().slotID = i;
 			slots [i].transform.SetParent (slotPanel.transform);
 		}
+			
 
-		//currentInventoryPanel = t.Find
-
-
+		buffer_obj = GameObject.Find ("Object buffer");
 		tooltip = this.GetComponent<Tooltip> ();
 
-		AddItem (0);
+		/*AddItem (0);
 		AddItem (1);
 		AddItem (0);
 		AddItem (0);
 		AddItem (1);
-		AddItem (1);
+		AddItem (1);*/
 	}
 
 	public void AddItem(int id){
@@ -75,18 +75,23 @@ public class Inventory : MonoBehaviour {
 		} else {
 			for (int i = 0; i < items.Count; i++) {
 				if (items [i].ID == -1) {
+					Debug.Log ("Добавляем");
 					items [i] = itemToAdd;
 					GameObject itemObj = Instantiate (inventoryItem);
 					itemObj.GetComponent<ItemData> ().item = itemToAdd;
 					itemObj.GetComponent<ItemData> ().slot = i;
+					itemObj.GetComponent<ItemData> ().ID = itemToAdd.ID;
 					itemObj.transform.SetParent (slots [i].transform);
+					itemObj.transform.localPosition = Vector3.zero;
 					itemObj.GetComponent<Image> ().sprite = itemToAdd.Sprite;
-					itemObj.transform.position = Vector2.zero;
+
 					itemObj.name = itemToAdd.title;
 					if (itemToAdd.Stackable) {
 						ItemData data = slots [i].transform.GetChild (0).GetComponent<ItemData> ();
 						data.amount = 1;
 					}
+
+
 					break;
 				}
 			}
@@ -95,12 +100,19 @@ public class Inventory : MonoBehaviour {
 
 	public void RemoveOneItem(int id){
 		Item itemToRemove = database.FetchItemByID (id);
+		ItemData data;
 		if (itemToRemove.Stackable && CheckIfItemIsInInventory (itemToRemove) ) {
 			
 			for (int i = 0; i < slots.Count; i++) {
 				
 				if ( !slots [i].GetComponent<Slot>().isEpty() ) {
-					ItemData data = slots [i].transform.GetChild (0).GetComponent<ItemData> ();
+					if (slots [i].transform.childCount > 0) {
+						data = slots [i].transform.GetChild (0).GetComponent<ItemData> ();
+					}else {
+						data = buffer_obj.transform.GetChild (0).GetComponent<ItemData> ();
+					}
+
+
 					if (data.item.ID == id) {
 						if (data.amount > 2) {
 							data.amount--;
@@ -135,10 +147,15 @@ public class Inventory : MonoBehaviour {
 	public void RemoveFullStockOfItems(int id){ // Удаление первого попавшегося с данным id
 		Item itemToRemove = database.FetchItemByID (id);
 		for (int i = 0; i < items.Count; i++) {
-				if (items [i].ID == id) {
-					Destroy ( slots [i].transform.GetChild(0).gameObject );
-					items[i] = new Item();
-					break;
+			if (items [i].ID == id) {
+				if (slots [i].transform.childCount == 1) {
+					Destroy (slots [i].transform.GetChild (0).gameObject);
+				} else {
+					Destroy ( buffer_obj.transform.GetChild(0).gameObject );
+				}
+				
+				items[i] = new Item();
+				break;
 			}
 		}
 	}
@@ -149,6 +166,36 @@ public class Inventory : MonoBehaviour {
 				return true;
 		}
 		return false;
+	}
+
+	public float GetMassImpact(){
+		float impact = 0;
+		for (int i = 0; i < currentSlotAmount; i++) {
+			if (slots [i].transform.childCount > 0) {
+				impact += items[ i ].mass;
+			}
+		}
+		return impact;
+	}
+
+	public Vector2 GetVelocityImpact(){
+		Vector2 impact =new Vector2(0, 0);
+		for (int i = 0; i < currentSlotAmount; i++) {
+			if (slots [i].transform.childCount > 0) {
+				impact += items[ i ].velocity;
+			}
+		}
+		return impact;
+	}
+
+	public Vector2 GetAccelerationImpact(){
+		Vector2 impact =new Vector2(0, 0);
+		for (int i = 0; i < currentSlotAmount; i++) {
+			if (slots [i].transform.childCount > 0) {
+				impact += items[ i ].acceleration;
+			}
+		}
+		return impact;
 	}
 
 	void Update() {
