@@ -7,17 +7,19 @@ public class addNewItem : MonoBehaviour {
 	GameObject inventory;
 	GameObject player;
 	bool isTrigger;
+	public int scale;
 
 	// Use this for initialization
 	void Start () {
+		scale = 5;
 		inventory = GameObject.Find ("Inventory");
 		player = GameObject.FindWithTag ("Player");
 
 		Debug.Log(this.transform.GetComponent<Collider2D>().isTrigger.ToString());
 		Debug.Log ("Я родился!");
 		isTrigger = false;
-		Debug.Log (this.GetComponentInParent<SpriteRenderer> ().sprite);
 		this.GetComponentInParent<SpriteRenderer>().sprite = inventory.GetComponent<ItemDatabase> ().FetchItemByID (ID).Sprite;
+		this.GetComponentInParent<RectTransform> ().localScale =new Vector3(scale,scale,0);
 	}
 		
 	//void OnTriggerExit(Collider2D suchPlayer){
