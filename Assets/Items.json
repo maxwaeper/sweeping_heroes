@@ -5,17 +5,9 @@
 		"impact": 1000,
 		"slug": "cursorSword_gold",
 		"stackable": true,
-		"mass": 0.0,
-		"acceleration":
-		{
-			"x": 1.0,
-			"y": 1.0
-		},
-		"velocity":
-		{
-			"x": 1.0,
-			"y": 1.0
-		}
+		"massImpact": 0.2,
+		"accelerationImpact": 0.3,
+		"velocityImpact": 0.15
 	},
 	{
 		"id": 1,
@@ -23,16 +15,8 @@
 		"impact": -2,
 		"slug": "cursorSword_silver",
 		"stackable": false,
-		"mass": 0.0,
-		"acceleration":
-		{
-			"x": 1.0,
-			"y": 1.0
-		},
-		"velocity":
-		{
-			"x": 1.0,
-			"y": 1.0
-		}		
+		"massImpact": 0.1,
+		"accelerationImpact": 0.15,
+		"velocityImpact": 0.2		
 	}
 ]
