@@ -172,27 +172,27 @@ public class Inventory : MonoBehaviour {
 		float impact = 0;
 		for (int i = 0; i < currentSlotAmount; i++) {
 			if (slots [i].transform.childCount > 0) {
-				impact += items[ i ].mass;
+				impact += items[ i ].massImpact;
 			}
 		}
 		return impact;
 	}
 
-	public Vector2 GetVelocityImpact(){
-		Vector2 impact =new Vector2(0, 0);
+	public float GetVelocityImpact(){
+		float impact = 0;
 		for (int i = 0; i < currentSlotAmount; i++) {
 			if (slots [i].transform.childCount > 0) {
-				impact += items[ i ].velocity;
+				impact += items[ i ].velocityImpact;
 			}
 		}
 		return impact;
 	}
 
-	public Vector2 GetAccelerationImpact(){
-		Vector2 impact =new Vector2(0, 0);
+	public float GetAccelerationImpact(){
+		float impact = 0;
 		for (int i = 0; i < currentSlotAmount; i++) {
 			if (slots [i].transform.childCount > 0) {
-				impact += items[ i ].acceleration;
+				impact += items[ i ].accelerationImpact;
 			}
 		}
 		return impact;
