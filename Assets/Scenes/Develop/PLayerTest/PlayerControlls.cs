@@ -72,15 +72,15 @@ public class PlayerControlls : MonoBehaviour {
 	}
 
 	float ModifyMassFromInventory() {
-        return (current_mass*inv_class.GetMassImpact());
+		return (current_mass * inv_class.GetMassImpact() );
 	}
 
 	Vector2 ModifyAccelerationFromInventory() {
-		return ( current_acceleration*inv_class.GetVelocityImpact () );
+		return ( current_acceleration * inv_class.GetVelocityImpact () );
 	}
 
 	Vector2  ModifyVelocityFromInventory() {
-		return ( current_velocity*inv_class.GetAccelerationImpact () );
+		return ( current_velocity * inv_class.GetAccelerationImpact () );
 	}
 
 	
